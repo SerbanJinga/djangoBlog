@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader" class="dots-fade">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+
+    <!-- featured 
+    ================================================== -->
+    <section class="s-featured">
+        <div class="row">
+            <div class="col-full">
+
+                <div class="featured-slider featured" data-aos="zoom-in">
+
+                    {% for obj in latest %}
+                    <div class="featured__slide">
+
+                        <div class="entry">
+
+                            <div class="entry__background" style="background-image:url({{obj.thumbnail.url}});"></div>
+                            
+                            <div class="entry__content">
+                                <span class="entry__category">
+                                    {% for cat in obj.categories.all %}
+                                    <a href="#0">{{ cat }}</a>
+                                    {% endfor %}
+                                </span>
+
+                                <h1><a href="{{obj.get_absolute_url}}" title="">{{obj.title}}</a></h1>
+
+                                <div class="entry__info">
+                                    <a href="#0" class="entry__profile-pic">
+                                        <img class="avatar" src="{{obj.author.profile_picture.url}}" alt="">
+                                    </a>
+
+                                    <ul class="entry__meta">
+                                        <li><a href="#0">{{ obj.author }}</a></li>
+                                        <li>{{ obj.timestamp|timesince }} ago</li>
+                                    </ul>
+                                </div>
+                            </div> <!-- end entry__content -->
+                            
+                        </div> <!-- end entry -->
+
+                    </div> <!-- end featured__slide -->
+                    {% endfor %}
+                    
+                    
+                </div> <!-- end featured -->
+
+            </div> <!-- end col-full -->
+        </div>
+    </section> <!-- end s-featured -->
+
+
+    <!-- s-content
+    ================================================== -->
+    <section class="s-content">
+        
+        <div class="row entries-wrap wide">
+            <div class="entries">
+
+                
+
+               
+                {% for obj in object_list %}
+                <article class="col-block">
+                
+                    <div class="item-entry" data-aos="zoom-in">
+                        <div class="item-entry__thumb">
+                            <a href="{{obj.get_absolute_url}}" class="item-entry__thumb-link">
+                                <img src="{{obj.thumbnail.url}}" 
+                                    alt="">
+                            </a>
+                        </div>
+        
+                        <div class="item-entry__text">
+                            <div class="item-entry__cat">
+                                {% for cat in obj.categories.all %}
+                                <a href="category.html">{{cat}}</a>
+                                {% endfor %}
+                            </div>
+    
+                            <h1 class="item-entry__title"><a href="{{obj.get_absolute_url}}">{{obj.title}}</a></h1>
+                                
+                            <div class="item-entry__date">
+                                <a href="{{obj.get_absolute_url}}">{{ obj.timestamp|date:"F d" }}</a>
+                            </div>
+                        </div>
+                    </div> <!-- item-entry -->
+    
+                </article> <!-- end article -->
+                {% endfor %}
+
+
+            </div> <!-- end entries -->
+        </div> <!-- end entries-wrap -->
+
+
+    </section> <!-- end s-content -->
+
+
+    {% include 'sidebar.html' with most_recent=sidebar all_cats=all_cats %}
+
+{% endblock content %}
+
+  
+
+ 

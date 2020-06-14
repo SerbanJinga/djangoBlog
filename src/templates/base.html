@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+    {% include "head.html" %}
+    <body id="top">
+        {% include "header.html" with all_cats=all_cats %}
+        {% block content %}
+        {% endblock content %}
+
+        {% include 'footer.html' %}
+        {% include 'scripts.html' %}
+    </body>
+</html>
