@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Author, Post, PostView, Category, CategoryView
-from django.views.generic import View, ListView, DetailView, CreateView
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from .forms import UserLoginForm, UserRegisterForm, CommentForm
+from .forms import UserLoginForm, UserRegisterForm, CommentForm, PostForm
 from django.contrib.auth import authenticate, get_user_model, login, logout
 # Create your views here.
 
@@ -163,3 +163,42 @@ def post_list(request):
         # 'form': form
     }
     return render(request, 'blog.html', context)
+
+class PostCreateView(CreateView):
+    model = Post
+    template_name = 'post_create.html'
+    form_class = PostForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Create'
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = get_author(self.request.user)
+        form.save()
+        return redirect(reverse("post-detail", kwargs={
+            'pk': form.instance.pk
+        }))
+
+class PostUpdateView(UpdateView):
+    model = Post
+    template_name = 'post_create.html'
+    form_class = PostForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Update'
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = get_author(self.request.user)
+        form.save()
+        return redirect(reverse("post-detail", kwargs={
+        'pk': form.instance.pk
+        }))
+
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = '/blog'
+    template_name = 'post_confirm_delete.html'

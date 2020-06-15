@@ -16,6 +16,12 @@
                 </div>
             </div>
 
+            <div>
+                {% if request.user.is_superuser %}
+                <a href="{% url 'post-update' pk=post.pk %}">Update</a>
+                <a href="{% url 'post-delete' pk=post.pk %}">Delete</a>
+                {% endif %}
+            </div>
             <div class="entry__header col-full">
                 <h1 class="entry__header-title display-1">
                     {{post.title}}
